@@ -6,3 +6,9 @@ resource "aws_vpc" "main" {
   tags                 = { Name = "terra-vpc" }
 }
 
+# 게이트웨이 선언
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.id
+  tags = {Name="terra-igw"}
+}
+
