@@ -109,8 +109,31 @@ resource "aws_security_group" "web_sg" {
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
-    name = "name"
+    name   = "name"
     values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"]
   }
   owners = ["099720109477"]
 }
+
+resource "aws_instance" "web1" {
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.public_a.id
+  vpc_security_group_ids      = [aws_security_group.web_sg]
+  associate_public_ip_address = true
+  tags = {
+    Name = "terra-web-1"
+  }
+}
+
+resource "aws_instance" "web2" {
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.public_c.id
+  vpc_security_group_ids      = [aws_security_group.web_sg]
+  associate_public_ip_address = true
+  tags = {
+    Name = "terra-web-2"
+  }
+}
+
