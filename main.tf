@@ -136,6 +136,14 @@ resource "aws_instance" "web2" {
     Name = "terra-web-2"
   }
 }
+resource "aws_lb" "app" {
+  name               = "terra-alb"
+  load_balancer_type = "application"
+  subnets            = [aws_subnet.public_a.id, aws_subnet.public_c.id]
+  security_groups    = [aws_security_group.alb_sg.id]
+  tags               = { Name = "terra-alb" }
+}
+
 
 resource "aws_lb_target_group" "app_tg" {
   name     = "terra-tg"
