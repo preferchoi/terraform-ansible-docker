@@ -137,3 +137,22 @@ resource "aws_instance" "web2" {
   }
 }
 
+resource "aws_lb_target_group" "app_tg" {
+  name     = "terra-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.main.id
+
+  health_check {
+    path                = "/"
+    matcher             = "200"
+    interval            = 60
+    unhealthy_threshold = 3
+    healthy_threshold   = 3
+    timeout             = 5
+  }
+
+  tags = {
+    Name = "terra-tg"
+  }
+}
